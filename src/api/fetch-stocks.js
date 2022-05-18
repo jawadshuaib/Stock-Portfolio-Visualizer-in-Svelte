@@ -29,14 +29,14 @@ const stocks = async (stocks) => {
   }
   catch (error) {  
     return { error }
-  } 
+  }
 }
 
 /**
  * API for getting ETF holdings
  * Provides a list of top 10 ETF holdings
  * @param req ?stock=ARKK 
- * @returns "{"name":"Tesla Inc","symbol":"TSLA","percentage_assets":"9.56%"},{"name":"Roku Inc Class A","symbol":"ROKU","percentage_assets":"6.48%"},{"name":"Teladoc Health Inc","symbol":"TDOC","percentage_assets":"5.76%"},{"name":"Square Inc A","symbol":"SQ","percentage_assets":"4.37%"},{"name":"Zoom Video Communications Inc","symbol":"ZM","percentage_assets":"4.36%"},{"name":"Shopify Inc A","symbol":"SHOP.TO","percentage_assets":"4.27%"},{"name":"Spotify Technology SA","symbol":"SPOT","percentage_assets":"3.68%"},{"name":"Twilio Inc A","symbol":"TWLO","percentage_assets":"3.66%"},{"name":"Coinbase Global Inc Ordinary Shares - Class A","symbol":"COIN","percentage_assets":"3.65%"},{"name":"Unity Software Inc Ordinary Shares","symbol":"U","percentage_assets":"3.41%"}
+ * @returns {"name":"Tesla Inc","symbol":"TSLA","percentage_assets":"9.56%"},{"name":"Roku Inc Class A","symbol":"ROKU","percentage_assets":"6.48%"},{"name":"Teladoc Health Inc","symbol":"TDOC","percentage_assets":"5.76%"},{"name":"Square Inc A","symbol":"SQ","percentage_assets":"4.37%"},{"name":"Zoom Video Communications Inc","symbol":"ZM","percentage_assets":"4.36%"},{"name":"Shopify Inc A","symbol":"SHOP.TO","percentage_assets":"4.27%"},{"name":"Spotify Technology SA","symbol":"SPOT","percentage_assets":"3.68%"},{"name":"Twilio Inc A","symbol":"TWLO","percentage_assets":"3.66%"},{"name":"Coinbase Global Inc Ordinary Shares - Class A","symbol":"COIN","percentage_assets":"3.65%"},{"name":"Unity Software Inc Ordinary Shares","symbol":"U","percentage_assets":"3.41%"}
  */
 const etf = async (stock) => { 
 
