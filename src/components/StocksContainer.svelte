@@ -2,25 +2,34 @@
 	import { terms } from '../stores/stock-stores';
 	import { displaySamplePortfolio } from '../stores/sample-portfolio-stores';
 	import { loading, setLoading, totalLoaded } from '../stores/loading-stores';
+	import { totalColumnsToDisplay } from '../stores/grid-columns-stores';
 	import Stock from '../components/Stock.svelte';
 	import SamplePortfolio from '../components/SamplePortfolio.svelte';
 
 	let symbols = [];
+	let totalGridColumns = '2';
+	let gridStyle = 'grid gap-2 py-2 md:grid-cols-2 grid-cols-1';
 
 	$: apiIsLoading = false;
-	$: mdGridStyle = '2';
 	$: shouldDisplaySamplePortfolio = true;
 
 	terms.subscribe((stocks) => {
 		symbols = [...new Set(stocks)];
-		mdGridStyle = symbols.length > 1 ? '2' : '1';
-
+		totalColumnsToDisplay.set(symbols.length);
 		// setLoading({ apiIsLoading: false, apiHasFinishedLoading: true });
+	});
+
+	// Subscribe to how many columns to display in the grid based on the number of stocks requested
+	totalColumnsToDisplay.subscribe((totalColumns) => {
+		totalGridColumns = totalColumns > 1 ? '2' : '1';
+		gridStyle = `grid gap-2 py-2 md:grid-cols-${totalGridColumns}`;
 	});
 
 	displaySamplePortfolio.subscribe((state) => {
 		shouldDisplaySamplePortfolio = state;
-		mdGridStyle = shouldDisplaySamplePortfolio ? '2' : '1';
+		// Samples will always be more than one, so we can always display them in two grids
+		totalGridColumns = '2';
+		totalColumnsToDisplay.set(2);
 	});
 
 	// Show option to save the portfolio if ALL stocks have loaded
@@ -39,7 +48,7 @@
 	});
 </script>
 
-<div class={`grid gap-2 py-2 md:grid-cols-${mdGridStyle} grid-cols-${mdGridStyle}`}>
+<div class={gridStyle}>
 	{#if symbols.length}
 		{#each symbols as symbol}
 			<Stock {symbol} allowDragAndDrop="true" />
