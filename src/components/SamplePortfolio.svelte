@@ -4,7 +4,7 @@
 	import { envVariables } from '../scripts/env-variables';
 
 	let symbols = envVariables.isDeveloperMode
-		? ['TSLA', 'WM']
+		? ['TSLA', 'WM', 'MSFT']
 		: ['HD', 'MSFT', 'JNJ', 'KO', 'DIS', 'HON', 'CVX', 'TSLA', 'WM', 'BA'];
 	setLoading({ apiIsLoading: true, apiHasFinishedLoading: false });
 </script>

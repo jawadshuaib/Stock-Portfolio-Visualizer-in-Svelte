@@ -9,7 +9,6 @@
 		showDefaultContent = true;
 
 	$: symbols = [];
-	$: mdGridStyle = '2';
 	$: draggedStock = null;
 
 	// Get the store value of the latest <Stock> component being dragged
@@ -48,7 +47,6 @@
 			symbols = stocks;
 		});
 		symbols = [...new Set(symbols)];
-		mdGridStyle = symbols.length > 1 ? '2' : '1';
 		// Hide default content
 		showDefaultContent = !symbols.length ? true : false;
 	}

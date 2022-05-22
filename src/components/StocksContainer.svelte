@@ -13,13 +13,14 @@
 
 	terms.subscribe((stocks) => {
 		symbols = [...new Set(stocks)];
+		mdGridStyle = symbols.length > 1 ? '2' : '1';
+
 		// setLoading({ apiIsLoading: false, apiHasFinishedLoading: true });
 	});
 
-	mdGridStyle = symbols.length > 1 ? '2' : '1';
-
 	displaySamplePortfolio.subscribe((state) => {
 		shouldDisplaySamplePortfolio = state;
+		mdGridStyle = shouldDisplaySamplePortfolio ? '2' : '1';
 	});
 
 	// Show option to save the portfolio if ALL stocks have loaded
