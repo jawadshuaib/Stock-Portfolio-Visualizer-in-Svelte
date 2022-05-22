@@ -12,8 +12,8 @@
 	 * @result filtered = [MSFT, GOOG, AAPL]
 	 */
 
-	function handleChange(event) {
-		if (event.key === 'Enter') {
+	function handleChange(e) {
+		if (e.key === 'Enter') {
 			terms.set([]);
 			setLoading({ apiIsLoading: true, apiHasFinishedLoading: false });
 
