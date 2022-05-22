@@ -2,13 +2,16 @@ import { writable } from 'svelte/store';
 
 /**
  * Keep track of when an action is loading
- * @param {Boolean} isLoading
+ * @param {Boolean} apiIsLoading
+ * @param {Boolean} apiHasFinishedLoading
  */
 
-const setLoading = (isLoading=false) => {
-  loading.set(isLoading);
+const setLoading = (status = { apiIsLoading: false, apiHasFinishedLoading: false }) => {
+  loading.set(status);
 }
 
-const loading = writable(false);
+const loading = writable({ apiIsLoading: false, apiHasFinishedLoading: false });
 
-export { setLoading, loading };
+const totalLoaded = writable (0);
+
+export { setLoading, loading, totalLoaded };

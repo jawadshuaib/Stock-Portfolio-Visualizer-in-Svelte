@@ -1,9 +1,12 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { setLoading } from '../stores/loading-stores';
+	import { setLoading, totalLoaded } from '../stores/loading-stores';
 	import fetch_stocks_api from '../api/fetch-stocks';
+	import { setDragStartStock } from '../stores/drag-and-drop-stores';
 
 	export let symbol;
+	export let allowDragAndDrop;
+
 	$: stock = {
 		symbol,
 		percentageChange: '',
@@ -15,8 +18,11 @@
 	 * @param {array} symbol
 	 * @return {Promise} {"symbol":"TSLA","last_price":"769.59","percentage_change":"+5.71%"}
 	 */
+
 	const promise = fetch_stocks_api.stocks([symbol]).then((s) => {
-		setLoading(false);
+		setLoading({ apiIsLoading: false, apiHasFinishedLoading: true });
+		totalLoaded.update((n) => n + 1);
+
 		if (s[0] !== undefined && s[0].hasOwnProperty('percentage_change')) {
 			if (s[0].percentageChange !== 'N/A') {
 				const [bgColor, fontSize] = get_style_info(s[0].percentage_change);
@@ -30,7 +36,6 @@
 			} else {
 				stock = {};
 			}
-
 			return stock;
 		} else {
 			return {
@@ -63,8 +68,15 @@
 			fontSize = 'text-base';
 		}
 
+		fontSize = 'text-3xl';
+
 		return [bgColor, fontSize];
 	}
+
+	// Save the stock {} being dragged into the store
+	const handleDragStart = (e) => {
+		setDragStartStock(stock);
+	};
 </script>
 
 {#await promise}
@@ -74,15 +86,18 @@
 		Loading...
 	</div>
 {:then stock}
-	<a
-		draggable="true"
-		href={`https://finance.yahoo.com/quote/${stock.symbol}?p=${stock.symbol}`}
-		class={`p-12 ${stock.bgColor} ${stock.fontSize} text-gray-100 text-center rounded-md shadow-sm hover:shadow-md flex flex-col items-center`}
+	<!-- href={`https://finance.yahoo.com/quote/${stock.symbol}?p=${stock.symbol}`} -->
+	<div
+		class={`${stock.bgColor} ${stock.fontSize} ${
+			allowDragAndDrop === 'true' ? 'cursor-move' : 'cursor-default'
+		} p-12 text-gray-100 text-center rounded-md shadow-sm hover:shadow-md flex flex-col items-center`}
 		transition:fade
+		draggable={`${allowDragAndDrop === 'true' ? 'true' : 'false'}`}
+		on:dragstart={handleDragStart}
 	>
 		<h2>{stock.symbol}</h2>
 		<h3>{stock.percentageChange}</h3>
-	</a>
+	</div>
 {:catch error}
 	<p>Error: {error.message}</p>
 {/await}

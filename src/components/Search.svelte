@@ -1,8 +1,9 @@
 <script>
-	import { terms, allTerms } from '../stores/stock-stores';
+	import { terms } from '../stores/stock-stores';
 	import { setLoading } from '../stores/loading-stores';
+	import { displaySamplePortfolio } from '../stores/sample-portfolio-stores';
 
-	let search = 'MSFT,GOOG';
+	let search = ''; // MSFT,GOOG,AMZN
 
 	/**
 	 * Only store unique search terms in storage
@@ -13,23 +14,26 @@
 
 	function handleChange(event) {
 		if (event.key === 'Enter') {
-			allTerms([]);
-			setLoading(true);
-			const ls = search.split(',');
-			let filtered = [];
-			terms.subscribe((stocks) => {
-				ls.forEach((t) => {
-					if (!stocks.includes(t)) {
-						filtered.push(t);
-					}
-				});
-				filtered = filtered.concat(stocks);
-			});
+			terms.set([]);
+			setLoading({ apiIsLoading: true, apiHasFinishedLoading: false });
 
-			// Push the search terms to the store
-			if (filtered.length) {
-				allTerms(filtered);
+			let ls = search.toUpperCase().split(',');
+			ls = ls.filter((t) => t !== '');
+			ls = ls.map((t) => t.trim());
+			if (ls.length === 0) {
+				terms.set([]);
 			}
+
+			// Remove duplicates from search terms
+			const uniqueLs = [...new Set(ls)];
+
+			if (uniqueLs.length) {
+				displaySamplePortfolio.set(false);
+				terms.set(uniqueLs);
+			}
+			// if (totalTerms === uniqueLs.length) {
+			// setLoading({ apiIsLoading: false, apiHasFinishedLoading: true });
+			// }
 		}
 	}
 </script>
