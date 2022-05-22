@@ -1,6 +1,6 @@
 import { envVariables } from '../scripts/env-variables';
 
-const baseURL = envVariables.isProduction ? `https://us-central1-effective-tea-350313.cloudfunctions.net/yahoo-finance-api-v1` : `${envVariables.corsAnywhereProxy}https://us-central1-effective-tea-350313.cloudfunctions.net/yahoo-finance-api-v1`;  
+const baseURL = envVariables.isDeveloperMode ? `${envVariables.corsAnywhereProxy}https://us-central1-effective-tea-350313.cloudfunctions.net/yahoo-finance-api-v1` : `https://us-central1-effective-tea-350313.cloudfunctions.net/yahoo-finance-api-v1`;  
 const options = {    
   headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})
 };
