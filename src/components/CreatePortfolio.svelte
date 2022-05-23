@@ -1,15 +1,16 @@
 <script>
-	// Firebase
-	// import { initializeApp } from "firebase/app";
+	import { browser } from '$app/env';
 	// Transitions
 	import { fade } from 'svelte/transition';
 	// Stores
 	import { dragStartStock, stocksInDragAndDropArea } from '../stores/drag-and-drop-stores';
-	import { userId as userIdStores } from '../stores/user-id-stores.js';
-	import { terms } from '../stores/stock-stores';
 	// Components
 	import Stock from '../components/Stock.svelte';
+	// Common Scripts
 	import { generateUniqueId } from '../scripts/common-scripts';
+	import { getUserIdFromLocalStorage } from '../scripts/common-scripts';
+	import { insertPortfolioInFirebase } from '../scripts/insert-portfolio-in-firebase';
+	import { updateFirebaseUser } from '../scripts/update-firebase-user';
 
 	let showDragAndDrop = false,
 		portfolioName = '',
@@ -40,19 +41,22 @@
 		stocksInDragAndDropArea.set([...ls, stock.symbol]);
 	}
 
-	function removeStocksFromContainer(stock) {
-		let stocksToKeepInContainer;
-		terms.subscribe((stocks) => {
-			stocksToKeepInContainer = stocks.filter((s) => s !== stock.symbol);
-		});
+	// function removeStocksFromContainer(stock) {
+	// 	let stocksToKeepInContainer;
+	// 	terms.subscribe((stocks) => {
+	// 		stocksToKeepInContainer = stocks.filter((s) => s !== stock.symbol);
+	// 	});
 
-		terms.set(stocksToKeepInContainer);
-	}
+	// 	terms.set(stocksToKeepInContainer);
+	// }
 
 	function handleChange(e) {
 		if (e.key === 'Enter') {
 			portfolioName = portfolioName.trim();
 			if (portfolioName.length) {
+				const portfolioId = `${portfolioName.toLowerCase().replace(/\s/g, '-')}-${generateUniqueId(
+					'xxxxy'
+				)}`;
 				let stocks = [];
 				stocksInDragAndDropArea.subscribe((s) => {
 					stocks = s;
@@ -62,43 +66,23 @@
 				// But just to be safe, remove them if there are any
 				stocks = [...new Set(stocks)];
 				if (stocks.length > 0) {
-					const portfolioId = `${portfolioName
-						.toLowerCase()
-						.replace(/\s/g, '-')}-${generateUniqueId('1xxxy')}`;
+					// Insert portfolio in Firebase
+					savePortfolioToFirebase(portfolioId, portfolioName, stocks);
 				}
-
-				console.log('portfolioName', portfolioName);
-				console.log('portfolio', stocks);
 			}
 		}
 	}
 
 	function savePortfolioToFirebase(portfolioId, name, stocks) {
-		let userId = null;
+		const userId = browser ? getUserIdFromLocalStorage() : null;
 
-		userIdStores.subscribe((id) => {
-			userId = id;
-
-			if (userId) {
-				const db = firebase.firestore();
-				// Save a list of user's portfolios to firebase
-				// db.collection('users').doc(userId).update({
-				// 	portfolios: firebase.firestore.FieldValue.arrayUnion(portfolioId)
-				// });
-
-				// Save portfolio details to firebase
-				const portfolio = {
-					name,
-					stocks
-				};
-				db.collection('portfolios')
-					.doc(userId)
-					.set({
-						[portfolioId]: portfolio
-					});
-			}
-		});
-		// Save to firebase
+		if (userId) {
+			// Append the portfolio to the user's portfolio list
+			updateFirebaseUser(userId, portfolioId).then(() => {
+				// Save portfolio details to firebase (i.e. portfolio name and a list of stocks)
+				insertPortfolioInFirebase(portfolioId, name, stocks);
+			});
+		}
 	}
 
 	function displayStocksInDragAndDropArea() {

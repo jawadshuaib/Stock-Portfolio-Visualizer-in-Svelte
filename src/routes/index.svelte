@@ -27,7 +27,7 @@
 			createFirebaseUser().then((uid) => {
 				if (uid) {
 					// // Save to stores. Note we only get user id from Firebase
-					// // When we post any data to Firebase, we will be using the stored values not local storage
+					// // When we post data to Firebase, we will be using the stored values not local storage
 					// // This is a security precaution to prevent users from injecting data with manipulated user id to Firebase
 					// userIdStores.set(uid);
 					// Save user id to local storage
