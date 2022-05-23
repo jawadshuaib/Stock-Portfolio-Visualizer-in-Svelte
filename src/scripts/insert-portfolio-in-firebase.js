@@ -11,15 +11,13 @@ import { envVariables } from '../scripts/env-variables';
 initializeApp(envVariables.firebaseConfig);
 const db = getFirestore();
 
-const insertPortfolioInFirebase = async (portfolioId, name, stocks) => {  
+const insertPortfolioInFirebase = async (name, stocks) => {  
   try {
-    const portfolio = await addDoc(collection(db, 'portfolios'), {
-     [portfolioId]: {
+    const portfolio = await addDoc(collection(db, 'portfolios'), 
+    {     
       name,
       stocks,
-      createdAt: serverTimestamp()
-     }
-      
+      createdAt: serverTimestamp()      
     });
     return portfolio.id;
   } catch (error) {

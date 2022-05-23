@@ -2,8 +2,9 @@
 	import { terms } from '../stores/stock-stores';
 	import { setLoading } from '../stores/loading-stores';
 	import { displaySamplePortfolio } from '../stores/sample-portfolio-stores';
+	import { envVariables } from '../scripts/env-variables';
 
-	let search = ''; // MSFT,GOOG,AMZN
+	let search = envVariables.isDeveloperMode ? 'MSFT,GOOG,AMZN' : '';
 
 	/**
 	 * Only store unique search terms in storage

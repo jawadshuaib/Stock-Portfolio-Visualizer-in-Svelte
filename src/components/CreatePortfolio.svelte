@@ -54,9 +54,9 @@
 		if (e.key === 'Enter') {
 			portfolioName = portfolioName.trim();
 			if (portfolioName.length) {
-				const portfolioId = `${portfolioName.toLowerCase().replace(/\s/g, '-')}-${generateUniqueId(
-					'xxxxy'
-				)}`;
+				// const portfolioId = `${portfolioName.toLowerCase().replace(/\s/g, '-')}-${generateUniqueId(
+				// 	'xxxxy'
+				// )}`;
 				let stocks = [];
 				stocksInDragAndDropArea.subscribe((s) => {
 					stocks = s;
@@ -67,20 +67,22 @@
 				stocks = [...new Set(stocks)];
 				if (stocks.length > 0) {
 					// Insert portfolio in Firebase
-					savePortfolioToFirebase(portfolioId, portfolioName, stocks);
+					savePortfolioToFirebase(portfolioName, stocks);
 				}
 			}
 		}
 	}
 
-	function savePortfolioToFirebase(portfolioId, name, stocks) {
+	function savePortfolioToFirebase(name, stocks) {
 		const userId = browser ? getUserIdFromLocalStorage() : null;
 
 		if (userId) {
-			// Append the portfolio to the user's portfolio list
-			updateFirebaseUser(userId, portfolioId).then(() => {
-				// Save portfolio details to firebase (i.e. portfolio name and a list of stocks)
-				insertPortfolioInFirebase(portfolioId, name, stocks);
+			// Save portfolio details to firebase (i.e. portfolio name and a list of stocks)
+			insertPortfolioInFirebase(name, stocks).then((portfolioId) => {
+				// Append the portfolio to the user's portfolio list
+				updateFirebaseUser(userId, portfolioId).then(() => {
+					console.log('Redirect the user');
+				});
 			});
 		}
 	}

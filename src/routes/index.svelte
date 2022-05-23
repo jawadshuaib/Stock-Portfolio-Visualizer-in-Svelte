@@ -2,7 +2,6 @@
 	import { browser } from '$app/env';
 	import { loading } from '../stores/loading-stores';
 	import { terms } from '../stores/stock-stores';
-	import { userId as userIdStores } from '../stores/user-id-stores.js';
 	import Search from '../components/Search.svelte';
 	import StocksContainer from '../components/StocksContainer.svelte';
 	import CreatePortfolio from '../components/CreatePortfolio.svelte';
@@ -24,14 +23,10 @@
 	if (browser) {
 		let userId = getUserIdFromLocalStorage();
 		if (userId === null) {
-			createFirebaseUser().then((uid) => {
-				if (uid) {
-					// // Save to stores. Note we only get user id from Firebase
-					// // When we post data to Firebase, we will be using the stored values not local storage
-					// // This is a security precaution to prevent users from injecting data with manipulated user id to Firebase
-					// userIdStores.set(uid);
+			createFirebaseUser().then((userId) => {
+				if (userId) {
 					// Save user id to local storage
-					saveUserIdToLocalStorage(uid);
+					saveUserIdToLocalStorage(userId);
 				}
 			});
 		}
