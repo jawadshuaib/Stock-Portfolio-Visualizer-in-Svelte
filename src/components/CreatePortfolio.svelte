@@ -7,7 +7,6 @@
 	// Components
 	import Stock from '../components/Stock.svelte';
 	// Common Scripts
-	// import { generateUniqueId } from '../scripts/common-scripts';
 	import { getUserIdFromLocalStorage } from '../scripts/common-scripts';
 	import { insertPortfolioInFirebase } from '../scripts/firebase';
 	import { updateFirebaseUser } from '../scripts/firebase';
@@ -81,7 +80,8 @@
 		if (userId) {
 			// Save portfolio details to firebase (i.e. portfolio name and a list of stocks)
 			insertPortfolioInFirebase(name, stocks).then((portfolioId) => {
-				// Append the portfolio to the user's portfolio list
+				// Append the portfolio to the user's portfolio list so we can keep track of what
+				// portfolios the user has
 				updateFirebaseUser(userId, portfolioId).then(() => {
 					window.location.href = '/my-portfolio';
 				});

@@ -1,7 +1,9 @@
 <script>
+	// Stores
 	import { terms } from '../stores/stock-stores';
 	import { setLoading } from '../stores/loading-stores';
 	import { displaySamplePortfolio } from '../stores/sample-portfolio-stores';
+	// Common Scripts
 	import { envVariables } from '../scripts/env-variables';
 
 	let search = envVariables.isDeveloperMode ? 'MSFT,GOOG,AMZN' : '';

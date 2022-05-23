@@ -2,7 +2,7 @@
 	import {
 		getFirestore,
 		getDoc,
-		doc,
+		doc
 	} from 'firebase/firestore';
 	import { envVariables } from '../env-variables';
 

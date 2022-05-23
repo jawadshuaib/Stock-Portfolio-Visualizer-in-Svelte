@@ -1,10 +1,13 @@
 <script>
 	import { browser } from '$app/env';
+	// Stores
 	import { loading } from '../stores/loading-stores';
 	import { terms } from '../stores/stock-stores';
+	// Components
 	import Search from '../components/Search.svelte';
 	import StocksContainer from '../components/StocksContainer.svelte';
 	import CreatePortfolio from '../components/CreatePortfolio.svelte';
+	// Common Scripts
 	import { createFirebaseUser } from '../scripts/firebase';
 	import { getUserIdFromLocalStorage, saveUserIdToLocalStorage } from '../scripts/common-scripts';
 

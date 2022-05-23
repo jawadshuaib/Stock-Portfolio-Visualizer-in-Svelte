@@ -1,6 +1,8 @@
 <script>
+	// Firebase
 	import { initializeApp } from 'firebase/app';
 	import { getFirestore, getDoc, doc } from 'firebase/firestore';
+	// Common Scripts
 	import { envVariables } from '../scripts/env-variables';
 
 	export let portfolioId;

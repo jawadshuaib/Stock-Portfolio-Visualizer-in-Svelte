@@ -1,8 +1,11 @@
 <script>
+	// Transition
 	import { fade } from 'svelte/transition';
+	// Stores
 	import { setLoading, totalLoaded } from '../stores/loading-stores';
-	import fetch_stocks_api from '../api/fetch-stocks';
 	import { setDragStartStock } from '../stores/drag-and-drop-stores';
+	// API
+	import fetch_stocks_api from '../api/fetch-stocks';
 
 	export let symbol;
 	export let allowDragAndDrop;

@@ -1,10 +1,10 @@
 <script>
 	import { browser } from '$app/env';
+	// Components
+	import Portfolio from '../components/Portfolio.svelte';
+	// Common Scripts
 	import { getUserPortfolioIds } from '../scripts/firebase';
 	import { getUserIdFromLocalStorage } from '../scripts/common-scripts';
-	import Portfolio from '../components/Portfolio.svelte';
-	// import { updateFirebaseUser } from '../scripts/firebase';
-	// import { userId as userIdStores } from '../stores/user-id-stores.js';
 
 	let userPortfolioIds = [];
 	const userId = browser ? getUserIdFromLocalStorage() : null;

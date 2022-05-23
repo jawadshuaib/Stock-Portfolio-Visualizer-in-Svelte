@@ -1,6 +1,9 @@
 <script>
+	// Components
 	import Stock from '../components/Stock.svelte';
+	// Stores
 	import { setLoading } from '../stores/loading-stores';
+	// Common Scripts
 	import { envVariables } from '../scripts/env-variables';
 
 	let symbols = envVariables.isDeveloperMode

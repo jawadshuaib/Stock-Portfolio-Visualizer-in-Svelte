@@ -1,8 +1,10 @@
 <script>
+	// Stores
 	import { terms } from '../stores/stock-stores';
 	import { displaySamplePortfolio } from '../stores/sample-portfolio-stores';
 	import { loading, setLoading, totalLoaded } from '../stores/loading-stores';
 	import { totalColumnsToDisplay } from '../stores/grid-columns-stores';
+	// Components
 	import Stock from '../components/Stock.svelte';
 	import SamplePortfolio from '../components/SamplePortfolio.svelte';
 
