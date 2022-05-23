@@ -7,16 +7,11 @@ const generateUniqueId = (pattern='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx') => {
 };
 
 function getUserIdFromLocalStorage() {
-  return sanitizeString(localStorage.getItem('userId'));
+  return localStorage.getItem('userId');
 }
 
 function saveUserIdToLocalStorage(userId) {
-  localStorage.setItem('userId', sanitizeString(userId));
-}
-
-function sanitizeString(str){
-  str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
-  return str.trim();
+  localStorage.setItem('userId', userId);
 }
 
 export { generateUniqueId, getUserIdFromLocalStorage, saveUserIdToLocalStorage };

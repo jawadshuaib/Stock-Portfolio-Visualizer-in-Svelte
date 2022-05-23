@@ -6,7 +6,7 @@
 	// Common Scripts
 	import { envVariables } from '../scripts/env-variables';
 
-	let search = envVariables.isDeveloperMode ? 'MSFT,GOOG,AMZN' : '';
+	let search = envVariables.isDeveloperMode ? 'MSFT' : '';
 
 	/**
 	 * Only store unique search terms in storage

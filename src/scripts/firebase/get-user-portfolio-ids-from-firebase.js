@@ -14,7 +14,7 @@
 		const snap = await getDoc(doc(db, 'users', userId))
 
 		if (snap.exists()) {
-			return [...new Set (snap.data().pids)];
+			return [...snap.data().pids];
 		}
 		else {
 			console.log("No such document found for users")

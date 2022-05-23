@@ -51,25 +51,35 @@
 	// 	terms.set(stocksToKeepInContainer);
 	// }
 
-	function handleChange(e) {
-		if (e.key === 'Enter') {
-			portfolioName = portfolioName.trim();
-			if (portfolioName.length) {
-				// const portfolioId = `${portfolioName.toLowerCase().replace(/\s/g, '-')}-${generateUniqueId(
-				// 	'xxxxy'
-				// )}`;
-				let stocks = [];
-				stocksInDragAndDropArea.subscribe((s) => {
-					stocks = s;
-				});
+	// If the user clicks on the save button, save the portfolio
+	function didPressSavePortfolioBtn() {
+		savePortfolio();
+	}
 
-				// There shouldn't be any duplicate stocks in the drag and drop area
-				// But just to be safe, remove them if there are any
-				stocks = [...new Set(stocks)];
-				if (stocks.length > 0) {
-					// Insert portfolio in Firebase
-					savePortfolioToFirebase(portfolioName, stocks);
-				}
+	// If the user presses Enter on the input field, save the portfolio
+	function didEnterPortfolioName(e) {
+		if (e.key === 'Enter') {
+			savePortfolio();
+		}
+	}
+
+	function savePortfolio() {
+		portfolioName = portfolioName.trim();
+		if (portfolioName.length) {
+			// const portfolioId = `${portfolioName.toLowerCase().replace(/\s/g, '-')}-${generateUniqueId(
+			// 	'xxxxy'
+			// )}`;
+			let stocks = [];
+			stocksInDragAndDropArea.subscribe((s) => {
+				stocks = s;
+			});
+
+			// There shouldn't be any duplicate stocks in the drag and drop area
+			// But just to be safe, remove them if there are any
+			stocks = [...new Set(stocks)];
+			if (stocks.length > 0) {
+				// Insert portfolio in Firebase
+				savePortfolioToFirebase(portfolioName, stocks);
 			}
 		}
 	}
@@ -113,17 +123,6 @@
 	</div>
 {:else}
 	<div class="bg-indigo-50 rounded-md p-3">
-		<!-- Input: Portfolio Name -->
-		<div class="text-center">
-			<input
-				bind:value={portfolioName}
-				on:keypress={handleChange}
-				type="text"
-				placeholder="Portfolio Name"
-				class="text-center border-2 border-blue-500 hover:border-blue-700 text-black py-2 px-4 rounded"
-			/>
-		</div>
-
 		<!-- Div: Drag and Drop Area -->
 		<div
 			class="my-2 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
@@ -162,6 +161,23 @@
 					{/if}
 				</div>
 			{/if}
+		</div>
+
+		<!-- Input: Portfolio Name -->
+		<div class="text-center">
+			<input
+				bind:value={portfolioName}
+				on:keypress={didEnterPortfolioName}
+				type="text"
+				placeholder="Portfolio Name"
+				class="text-center border-2 border-blue-500 hover:border-blue-700 text-black py-2 px-4 rounded placeholder-gray-500 placeholder-opacity-50"
+			/>
+			<button
+				class="border-2 border-blue-500 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+				on:click={() => {
+					didPressSavePortfolioBtn();
+				}}>Save Portfolio</button
+			>
 		</div>
 	</div>
 {/if}

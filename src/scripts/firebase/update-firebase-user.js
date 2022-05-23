@@ -5,6 +5,7 @@ import {
   getFirestore,
   updateDoc,
   doc,
+  Timestamp
 } from 'firebase/firestore';
 import { envVariables } from '../env-variables';
 
@@ -14,14 +15,21 @@ const db = getFirestore();
 
 const updateFirebaseUser = async (userId, portfolioId) => {
   if (userId && portfolioId) {
-    let userPortfolioIds = await getUserPortfolioIds(userId);
+    let pids = await getUserPortfolioIds(userId);
     // Add the new portfolio id to the list of portfolio ids
     // if it doesn't already exist.
-    if (!userPortfolioIds.includes(portfolioId)) {
-      userPortfolioIds = [...userPortfolioIds, portfolioId];
+    if (!pids.includes(portfolioId)) {
+      const createdAt = Timestamp.fromDate(new Date());
+      const pid = {
+        portfolioId,
+        createdAt
+      }
+      pids = [...pids, pid];
+      // userPortfolioIds = [...userPortfolioIds, portfolioId];
     }
     await updateDoc(doc(db, 'users', userId), {
-      pids: userPortfolioIds,
+      // pids: userPortfolioIds,
+      pids
     });
   }
 };
