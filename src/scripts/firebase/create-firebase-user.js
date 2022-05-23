@@ -5,10 +5,10 @@
 		addDoc,
 		serverTimestamp
 	} from 'firebase/firestore';
-	import { envVariables } from '../scripts/env-variables';
+	import { envVariables } from '../env-variables';
 
 	// Initialize Firebase
-	const app = initializeApp(envVariables.firebaseConfig);
+	initializeApp(envVariables.firebaseConfig);
 	const db = getFirestore();
 
 	const createFirebaseUser = async () => {

@@ -5,6 +5,8 @@
 
 	export let portfolioId;
 
+	let name = null,
+		stocks = [];
 	// Initialize Firebase
 	initializeApp(envVariables.firebaseConfig);
 	const db = getFirestore();
@@ -13,7 +15,10 @@
 		const snap = await getDoc(doc(db, 'portfolios', portfolioId));
 
 		if (snap.exists()) {
-			console.log(snap.data());
+			name = snap.data().name;
+			stocks = snap.data().stocks;
+
+			// console.log(snap.data());
 		} else {
 			console.log('No such document found for portfolio');
 		}
@@ -22,4 +27,8 @@
 	getPortfolioInfo(portfolioId);
 </script>
 
-<div>{portfolioId}</div>
+<div>{portfolioId} | {name}</div>
+{#each stocks as stock}
+	<div>{stock}</div>
+{/each}
+----------------

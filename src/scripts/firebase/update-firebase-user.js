@@ -1,12 +1,12 @@
 // Provide an updated list of portfolio ids to the user in Firebase.
 import { initializeApp } from 'firebase/app';
-import { getUserPortfolioIds } from '../scripts/get-user-portfolio-ids-from-firebase';
+import { getUserPortfolioIds } from './get-user-portfolio-ids-from-firebase';
 import {
   getFirestore,
   updateDoc,
   doc,
 } from 'firebase/firestore';
-import { envVariables } from './env-variables';
+import { envVariables } from '../env-variables';
 
 // Initialize Firebase
 initializeApp(envVariables.firebaseConfig);
@@ -24,17 +24,6 @@ const updateFirebaseUser = async (userId, portfolioId) => {
       pids: userPortfolioIds,
     });
   }
-  // if (userId !== null) {
-  //   getUserPortfolioIds(userId).then((ids) => {
-  //     userPortfolioIds = [...ids, portfolioId];
-
-  //     const userRef = doc(db, "users", userPortfolioIds);
-      
-  //     updateDoc(userRef, {
-  //       pids: true
-  //     });      
-  //   });    
-  // }
 };
 
 export { updateFirebaseUser };

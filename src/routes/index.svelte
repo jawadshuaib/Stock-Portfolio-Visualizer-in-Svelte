@@ -5,7 +5,7 @@
 	import Search from '../components/Search.svelte';
 	import StocksContainer from '../components/StocksContainer.svelte';
 	import CreatePortfolio from '../components/CreatePortfolio.svelte';
-	import { createFirebaseUser } from '../scripts/create-firebase-user';
+	import { createFirebaseUser } from '../scripts/firebase';
 	import { getUserIdFromLocalStorage, saveUserIdToLocalStorage } from '../scripts/common-scripts';
 
 	$: apiHasFinishedLoading = false;

@@ -4,7 +4,7 @@
 		getDoc,
 		doc,
 	} from 'firebase/firestore';
-	import { envVariables } from './env-variables';
+	import { envVariables } from '../env-variables';
 
 	// Initialize Firebase
 	initializeApp(envVariables.firebaseConfig);

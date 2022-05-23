@@ -7,10 +7,10 @@
 	// Components
 	import Stock from '../components/Stock.svelte';
 	// Common Scripts
-	import { generateUniqueId } from '../scripts/common-scripts';
+	// import { generateUniqueId } from '../scripts/common-scripts';
 	import { getUserIdFromLocalStorage } from '../scripts/common-scripts';
-	import { insertPortfolioInFirebase } from '../scripts/insert-portfolio-in-firebase';
-	import { updateFirebaseUser } from '../scripts/update-firebase-user';
+	import { insertPortfolioInFirebase } from '../scripts/firebase';
+	import { updateFirebaseUser } from '../scripts/firebase';
 
 	let showDragAndDrop = false,
 		portfolioName = '',
@@ -27,8 +27,10 @@
 	const handleDragDropped = (e) => {
 		// Remove stock from the container
 		// removeStocksFromContainer(draggedStock);
+
 		// Save in the drag and drop store
 		saveStockInDragAndDropStore(draggedStock);
+
 		// Display all the stocks in the drag and drop area
 		displayStocksInDragAndDropArea();
 	};
@@ -81,7 +83,7 @@
 			insertPortfolioInFirebase(name, stocks).then((portfolioId) => {
 				// Append the portfolio to the user's portfolio list
 				updateFirebaseUser(userId, portfolioId).then(() => {
-					console.log('Redirect the user');
+					window.location.href = '/my-portfolio';
 				});
 			});
 		}

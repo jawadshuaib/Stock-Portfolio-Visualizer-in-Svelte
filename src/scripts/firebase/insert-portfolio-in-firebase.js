@@ -5,7 +5,7 @@ import {
   addDoc,
   serverTimestamp
 } from 'firebase/firestore';
-import { envVariables } from '../scripts/env-variables';
+import { envVariables } from '../env-variables';
 
 // Initialize Firebase
 initializeApp(envVariables.firebaseConfig);
@@ -24,6 +24,5 @@ const insertPortfolioInFirebase = async (name, stocks) => {
     console.error('Error adding portfolio in Firebase Database', error);
   }
 }
-
 
 export { insertPortfolioInFirebase};
