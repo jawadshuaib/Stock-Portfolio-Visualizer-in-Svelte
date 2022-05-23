@@ -6,7 +6,8 @@
 	import Search from '../components/Search.svelte';
 	import StocksContainer from '../components/StocksContainer.svelte';
 	import CreatePortfolio from '../components/CreatePortfolio.svelte';
-	import { generateUniqueId } from '../scripts/common-scripts';
+	import { createFirebaseUser } from '../scripts/create-firebase-user';
+	import { getUserIdFromLocalStorage, saveUserIdToLocalStorage } from '../scripts/common-scripts';
 
 	$: apiHasFinishedLoading = false;
 	$: haveUserSearchTerms = false;
@@ -21,29 +22,19 @@
 
 	// Setup user id for local storage
 	if (browser) {
-		setupUserId();
-	}
-
-	function setupUserId() {
 		let userId = getUserIdFromLocalStorage();
 		if (userId === null) {
-			// Generate a new user id if one doesn't exist
-			userId = generateUniqueId();
-			// Save to stores. Note we only set using our own generated unique id
-			// When we upload to Firebase, we will be used the stored values not local storage
-			// This is a security precaution to prevent users from injecting their own user id to Firebase
-			userIdStores.set(userId);
-			// Save user id to local storage
-			saveUserIdToLocalStorage(userId);
+			createFirebaseUser().then((uid) => {
+				if (uid) {
+					// // Save to stores. Note we only get user id from Firebase
+					// // When we post any data to Firebase, we will be using the stored values not local storage
+					// // This is a security precaution to prevent users from injecting data with manipulated user id to Firebase
+					// userIdStores.set(uid);
+					// Save user id to local storage
+					saveUserIdToLocalStorage(uid);
+				}
+			});
 		}
-	}
-
-	function getUserIdFromLocalStorage() {
-		return localStorage.getItem('userId');
-	}
-
-	function saveUserIdToLocalStorage(userId) {
-		localStorage.setItem('userId', userId);
 	}
 </script>
 

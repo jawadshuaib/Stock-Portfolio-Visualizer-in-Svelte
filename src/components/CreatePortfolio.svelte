@@ -1,8 +1,15 @@
 <script>
+	// Firebase
+	// import { initializeApp } from "firebase/app";
+	// Transitions
 	import { fade } from 'svelte/transition';
+	// Stores
 	import { dragStartStock, stocksInDragAndDropArea } from '../stores/drag-and-drop-stores';
+	import { userId as userIdStores } from '../stores/user-id-stores.js';
 	import { terms } from '../stores/stock-stores';
+	// Components
 	import Stock from '../components/Stock.svelte';
+	import { generateUniqueId } from '../scripts/common-scripts';
 
 	let showDragAndDrop = false,
 		portfolioName = '',
@@ -46,28 +53,53 @@
 		if (e.key === 'Enter') {
 			portfolioName = portfolioName.trim();
 			if (portfolioName.length) {
-				let portfolio = [];
-				stocksInDragAndDropArea.subscribe((stocks) => {
-					portfolio = stocks;
+				let stocks = [];
+				stocksInDragAndDropArea.subscribe((s) => {
+					stocks = s;
 				});
 
 				// There shouldn't be any duplicate stocks in the drag and drop area
 				// But just to be safe, remove them if there are any
-				portfolio = [...new Set(portfolio)];
+				stocks = [...new Set(stocks)];
+				if (stocks.length > 0) {
+					const portfolioId = `${portfolioName
+						.toLowerCase()
+						.replace(/\s/g, '-')}-${generateUniqueId('1xxxy')}`;
+				}
 
-				// userId
-				const userId = 1; // uniqueId();
 				console.log('portfolioName', portfolioName);
-				console.log('portfolio', portfolio);
-				console.log('userId', userId);
-				// Create user id and save it to localStorage
+				console.log('portfolio', stocks);
 			}
 		}
 	}
 
-	const saveToFirebase = (userId, portfolioId, portfolioName, portfolio) => {
+	function savePortfolioToFirebase(portfolioId, name, stocks) {
+		let userId = null;
+
+		userIdStores.subscribe((id) => {
+			userId = id;
+
+			if (userId) {
+				const db = firebase.firestore();
+				// Save a list of user's portfolios to firebase
+				// db.collection('users').doc(userId).update({
+				// 	portfolios: firebase.firestore.FieldValue.arrayUnion(portfolioId)
+				// });
+
+				// Save portfolio details to firebase
+				const portfolio = {
+					name,
+					stocks
+				};
+				db.collection('portfolios')
+					.doc(userId)
+					.set({
+						[portfolioId]: portfolio
+					});
+			}
+		});
 		// Save to firebase
-	};
+	}
 
 	function displayStocksInDragAndDropArea() {
 		stocksInDragAndDropArea.subscribe((stocks) => {
