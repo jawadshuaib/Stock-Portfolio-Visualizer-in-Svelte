@@ -1,11 +1,14 @@
 <script>
+	import { browser } from '$app/env';
 	// Firebase
 	import { initializeApp } from 'firebase/app';
-	import { getFirestore, getDoc, doc } from 'firebase/firestore';
-	// Common Scripts
-	import { envVariables } from '../scripts/env-variables';
+	import { getFirestore, getDoc, doc, updateDoc, deleteField } from 'firebase/firestore';
 	// Components
 	import Stock from '../components/Stock.svelte';
+	// Common Scripts
+	import { envVariables } from '../scripts/env-variables';
+	import { getUserIdFromLocalStorage } from '../scripts/common-scripts';
+	import { removePortfolioFromFirebase } from '../scripts/firebase';
 
 	export let pid;
 	let name = null,
@@ -34,9 +37,20 @@
 	getPortfolioInfo(portfolioId);
 
 	function didClickRemoveRecord(e) {
-		// e.preventDefault();
-		// e.stopPropagation();
-		console.log('Remove record');
+		deletePortfolioFromFirebase();
+	}
+
+	function deletePortfolioFromFirebase() {
+		const userId = browser ? getUserIdFromLocalStorage() : null;
+		if (userId) {
+			// Remove portfolio from the user's portfolio list
+			removePortfolioFromFirebase(userId, portfolioId).then(() => {
+				window.location.href = '/my-portfolio';
+				// console.log('Portfolio removed from firebase', userId, portfolioId);
+			});
+		} else {
+			console.log('User ID not found');
+		}
 	}
 </script>
 
@@ -49,7 +63,10 @@
 <div class="flex w-full justify-end opacity-60">
 	<!-- Perma Link -->
 	<div>
-		<a href="/perma-link/{portfolioId}">
+		<a
+			href="/perma-link/{portfolioId}"
+			title="View a link to the portfolio that can be shared with others"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				class="h-6 w-6"

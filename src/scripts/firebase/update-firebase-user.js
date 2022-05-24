@@ -25,13 +25,26 @@ const updateFirebaseUser = async (userId, portfolioId) => {
         createdAt
       }
       pids = [...pids, pid];
-      // userPortfolioIds = [...userPortfolioIds, portfolioId];
     }
     await updateDoc(doc(db, 'users', userId), {
-      // pids: userPortfolioIds,
       pids
     });
   }
 };
 
-export { updateFirebaseUser };
+// Note, we remove this portfolio from the user but it remains present in the
+// portfolios collection. This way, others can still access it if they have the link to it.
+const removePortfolioFromFirebase = async (userId, portfolioId) => {
+  if (userId && portfolioId) {
+    let pids = await getUserPortfolioIds(userId);
+    // Remove the portfolio id from the list of portfolio ids
+    // if it exists.      
+    pids = pids.filter(pid => pid.portfolioId !== portfolioId);
+      
+    return await updateDoc(doc(db, 'users', userId), {
+      pids
+    }); 
+  }
+};
+
+export { updateFirebaseUser, removePortfolioFromFirebase };
