@@ -8,10 +8,10 @@
 	import Stock from '../components/Stock.svelte';
 
 	export let pid;
-	let portfolioId = pid.portfolioId;
-
 	let name = null,
-		stocks = [];
+		stocks = [],
+		portfolioId = pid.portfolioId;
+
 	$: totalGridColumns = '1';
 	// Initialize Firebase
 	initializeApp(envVariables.firebaseConfig);
@@ -26,7 +26,6 @@
 			const totalStocks = stocks.length;
 
 			totalGridColumns = totalStocks > 4 ? '4' : totalStocks;
-			console.log(totalGridColumns);
 		} else {
 			console.log('No such document found for portfolio');
 		}
