@@ -1,5 +1,5 @@
 export const envVariables = {  
-  isDeveloperMode: true,
+  isDeveloperMode: false,
   corsAnywhereProxy: 'https://glacial-brushlands-90091.herokuapp.com/',
   firebaseConfig: {
     apiKey: import.meta.env.VITE_FIREBASE_apiKey,
