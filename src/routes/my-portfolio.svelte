@@ -22,15 +22,13 @@
 	};
 	if (userId !== null) {
 		getLiveUserPortfolioIds(userId, updateFn);
-	} else {
-		console.log('no user id');
 	}
 </script>
 
 <h1 class="text-4xl text-center my-8 uppercase">My Portfolio</h1>
 <div class="gap-2 py-2">
 	<p class="text-xl">
-		{#if pids}
+		{#if pids.length > 0}
 			<div>
 				{#each pids as pid}
 					<Portfolio {pid} />
