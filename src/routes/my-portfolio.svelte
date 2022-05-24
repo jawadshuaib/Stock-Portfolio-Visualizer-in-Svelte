@@ -22,6 +22,8 @@
 	};
 	if (userId !== null) {
 		getLiveUserPortfolioIds(userId, updateFn);
+	} else {
+		console.log('no user id');
 	}
 </script>
 
